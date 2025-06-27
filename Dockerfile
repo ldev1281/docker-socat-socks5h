@@ -4,6 +4,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         socat \
         proxychains \
+        dnsutils \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --chmod=755 usr/local/bin/entrypoint.sh /usr/local/bin/entrypoint.sh
