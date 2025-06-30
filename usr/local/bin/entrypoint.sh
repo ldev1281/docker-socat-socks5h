@@ -8,8 +8,8 @@ set -e
 
 if [ -n "${SOCKS5H_HOST:-}" ]; then
   : "${SOCKS5H_PORT:=1080}"
-  : "${SOCKS5H_USER:?Missing SOCKS5H_USER}"
-  : "${SOCKS5H_PASSWORD:?Missing SOCKS5H_PASSWORD}"
+  : "${SOCKS5H_USER:-}"
+  : "${SOCKS5H_PASSWORD:-}"
 
   echo "[INFO] Starting socat via proxychains (socks5h with auth)"
   echo "[INFO] SOCKS5 proxy (with DNS): $SOCKS5H_HOST:$SOCKS5H_PORT"

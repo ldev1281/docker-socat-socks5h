@@ -21,9 +21,9 @@ docker run --rm \
   -e TARGET_HOST=example.com \
   -e TARGET_PORT=80 \
   -e SOCKS5H_HOST=127.0.0.1 \
-  -e SOCKS5H_PORT=9050 \
-  -e SOCKS5H_USER=admin \ 
-  -e SOCKS5H_PASSWORD=password \   
+  -e SOCKS5H_PORT=9050 
+  -e SOCKS5H_USER=admin \         ### optional
+  -e SOCKS5H_PASSWORD=password \  ### optional
   -p 12345:12345 \
   ghcr.io/ldev1281/docker-socat-socks5h:latest
 ```
@@ -58,8 +58,8 @@ services:
       - TARGET_PORT=443
       - SOCKS5H_HOST=127.0.0.1
       - SOCKS5H_PORT=9050
-      - SOCKS5H_USER=admin 
-      - SOCKS5H_PASSWORD=password      
+      - SOCKS5H_USER=admin        ### optional
+      - SOCKS5H_PASSWORD=password ### optional     
 ```
 
 ## Environment Variables
