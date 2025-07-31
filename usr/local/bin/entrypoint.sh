@@ -57,13 +57,17 @@ if [ -n "${SOCKS5H_HOST:-}" ]; then
     echo "command=/usr/sbin/danted -f /etc/danted.conf"
     echo "autorestart=false"
     echo "stdout_logfile=/dev/stdout"
+    echo "stdout_logfile_maxbytes=0"
     echo "stderr_logfile=/dev/stderr"
+    echo "stderr_logfile_maxbytes=0"
     echo ""
     echo "[program:proxychains-socat]"
     echo "command=/usr/bin/proxychains /usr/bin/socat TCP-LISTEN:${LISTEN_PORT},fork,reuseaddr TCP:${TARGET_HOST}:${TARGET_PORT}"
     echo "autorestart=false"
     echo "stdout_logfile=/dev/stdout"
+    echo "stdout_logfile_maxbytes=0"
     echo "stderr_logfile=/dev/stderr"
+    echo "stderr_logfile_maxbytes=0"
   } >/etc/supervisord.conf
 
   exec /usr/bin/supervisord -c /etc/supervisord.conf
