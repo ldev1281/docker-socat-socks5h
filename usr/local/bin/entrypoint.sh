@@ -18,15 +18,55 @@ if [ -n "${SOCKS5H_HOST:-}" ]; then
   echo "[INFO] Listening on: 0.0.0.0:$LISTEN_PORT"
 
   {
+    echo "logoutput: stderr"
+    echo "internal: 127.0.0.1 port = 1080"
+    echo "external: eth0"
+    echo ""
+    echo "method: none"
+    echo "user.notprivileged: nobody"
+    echo ""
+    echo "client pass {"
+    echo "    from: 127.0.0.1/32 to: 0.0.0.0/0"
+    echo "    log: connect disconnect error"
+    echo "}"
+    echo ""
+    echo "socks pass {"
+    echo "    from: 127.0.0.1/32 to: 0.0.0.0/0"
+    echo "    protocol: tcp udp"
+    echo "    log: connect disconnect error"
+    echo "}"
+  } >/etc/danted.conf
+
+  {
     echo "strict_chain"
     echo "proxy_dns"
     echo "tcp_read_time_out 15000"
     echo "tcp_connect_time_out 8000"
     echo "[ProxyList]"
+    echo "socks5 127.0.0.1 1080"
     echo "socks5  ${SOCKS5H_HOST} ${SOCKS5H_PORT} ${SOCKS5H_USER} ${SOCKS5H_PASSWORD}"
-  } > /etc/proxychains.conf
+  } >/etc/proxychains.conf
 
-  exec proxychains socat TCP-LISTEN:$LISTEN_PORT,fork,reuseaddr TCP:$TARGET_HOST:$TARGET_PORT
+  {
+    echo "[supervisord]"
+    echo "nodaemon=true"
+    echo "logfile=/dev/stdout"
+    echo "logfile_maxbytes=0"
+    echo ""
+    echo "[program:danted]"
+    echo "command=/usr/sbin/danted -f /etc/danted.conf"
+    echo "autorestart=false"
+    echo "stdout_logfile=/dev/stdout"
+    echo "stderr_logfile=/dev/stderr"
+    echo ""
+    echo "[program:proxychains-socat]"
+    echo "command=/usr/bin/proxychains /usr/bin/socat TCP-LISTEN:${LISTEN_PORT},fork,reuseaddr TCP:${TARGET_HOST}:${TARGET_PORT}"
+    echo "autorestart=false"
+    echo "stdout_logfile=/dev/stdout"
+    echo "stderr_logfile=/dev/stderr"
+  } >/etc/supervisord.conf
+
+  exec /usr/bin/supervisord -c /etc/supervisord.conf
 
 else
   echo "[INFO] Starting socat directly (no proxy)..."
