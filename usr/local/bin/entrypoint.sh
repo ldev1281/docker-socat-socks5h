@@ -54,7 +54,8 @@ if [ -n "${SOCKS5H_HOST:-}" ]; then
     echo "logfile_maxbytes=0"
     echo ""
     echo "[program:danted]"
-    echo "command=/usr/sbin/danted -f /etc/danted.conf"
+    echo "command=bash -c '/usr/sbin/danted -f /etc/danted.conf || kill -s SIGINT \$(cat /supervisord.pid)'"
+    echo "stopasgroup = true"
     echo "autorestart=false"
     echo "stdout_logfile=/dev/stdout"
     echo "stdout_logfile_maxbytes=0"
@@ -62,16 +63,13 @@ if [ -n "${SOCKS5H_HOST:-}" ]; then
     echo "stderr_logfile_maxbytes=0"
     echo ""
     echo "[program:proxychains-socat]"
-    echo "command=/usr/bin/proxychains4 /usr/bin/socat TCP-LISTEN:${LISTEN_PORT},fork,reuseaddr TCP:${TARGET_HOST}:${TARGET_PORT}"
+    echo "command=bash -c '/usr/bin/proxychains4 /usr/bin/socat TCP-LISTEN:${LISTEN_PORT},fork,reuseaddr TCP:${TARGET_HOST}:${TARGET_PORT} || kill -s SIGINT \$(cat supervisord.pid)'"
+    echo "stopasgroup = true"
     echo "autorestart=false"
     echo "stdout_logfile=/dev/stdout"
     echo "stdout_logfile_maxbytes=0"
     echo "stderr_logfile=/dev/stderr"
     echo "stderr_logfile_maxbytes=0"
-    echo ""
-    echo "[eventlistener:processes]"
-    echo "command=bash -c \"printf 'READY\n' && while read line; do kill -SIGQUIT $PPID; done < /dev/stdin\""
-    echo "events=PROCESS_STATE_STOPPED,PROCESS_STATE_EXITED,PROCESS_STATE_FATAL"
   } >/etc/supervisord.conf
 
   exec /usr/bin/supervisord -c /etc/supervisord.conf
