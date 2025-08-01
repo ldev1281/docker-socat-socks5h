@@ -3,7 +3,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     socat \
-    proxychains \
+    proxychains4 \
     dante-server \
     supervisor \
     dnsutils \

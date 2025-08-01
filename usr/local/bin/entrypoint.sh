@@ -45,7 +45,7 @@ if [ -n "${SOCKS5H_HOST:-}" ]; then
     echo "[ProxyList]"
     echo "socks5 127.0.0.1 1080"
     echo "socks5  ${SOCKS5H_HOST} ${SOCKS5H_PORT} ${SOCKS5H_USER} ${SOCKS5H_PASSWORD}"
-  } >/etc/proxychains.conf
+  } >/etc/proxychains4.conf
 
   {
     echo "[supervisord]"
@@ -62,7 +62,7 @@ if [ -n "${SOCKS5H_HOST:-}" ]; then
     echo "stderr_logfile_maxbytes=0"
     echo ""
     echo "[program:proxychains-socat]"
-    echo "command=/usr/bin/proxychains /usr/bin/socat TCP-LISTEN:${LISTEN_PORT},fork,reuseaddr TCP:${TARGET_HOST}:${TARGET_PORT}"
+    echo "command=/usr/bin/proxychains4 /usr/bin/socat TCP-LISTEN:${LISTEN_PORT},fork,reuseaddr TCP:${TARGET_HOST}:${TARGET_PORT}"
     echo "autorestart=false"
     echo "stdout_logfile=/dev/stdout"
     echo "stdout_logfile_maxbytes=0"
