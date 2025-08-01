@@ -54,7 +54,7 @@ if [ -n "${SOCKS5H_HOST:-}" ]; then
     echo "logfile_maxbytes=0"
     echo ""
     echo "[program:danted]"
-    echo "command=bash -c '/usr/sbin/danted -f /etc/danted.conf || kill -s SIGINT \$(cat /supervisord.pid)'"
+    echo "command=bash -c '/usr/sbin/danted -f /etc/danted.conf || kill -s SIGINT \$(cat supervisord.pid)'"
     echo "stopasgroup = true"
     echo "autorestart=false"
     echo "stdout_logfile=/dev/stdout"
