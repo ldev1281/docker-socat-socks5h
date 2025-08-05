@@ -8,12 +8,9 @@ set -e
 
 if [ -n "${SOCKS5H_HOST:-}" ]; then
   : "${SOCKS5H_PORT:=1080}"
-  : "${SOCKS5H_USER:-}"
-  : "${SOCKS5H_PASSWORD:-}"
 
-  echo "[INFO] Starting socat via proxychains (socks5h with auth)"
+  echo "[INFO] Starting socat via proxychains (socks5h without auth)"
   echo "[INFO] SOCKS5 proxy (with DNS): $SOCKS5H_HOST:$SOCKS5H_PORT"
-  echo "[INFO] Proxy user: $SOCKS5H_USER"
   echo "[INFO] Target:       $TARGET_HOST:$TARGET_PORT"
   echo "[INFO] Listening on: 0.0.0.0:$LISTEN_PORT"
 
@@ -44,7 +41,7 @@ if [ -n "${SOCKS5H_HOST:-}" ]; then
     echo "tcp_connect_time_out 8000"
     echo "[ProxyList]"
     echo "socks5 127.0.0.1 1080"
-    echo "socks5  ${SOCKS5H_HOST} ${SOCKS5H_PORT} ${SOCKS5H_USER} ${SOCKS5H_PASSWORD}"
+    echo "socks5  ${SOCKS5H_HOST} ${SOCKS5H_PORT}
   } >/etc/proxychains4.conf
 
   {
