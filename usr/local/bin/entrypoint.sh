@@ -41,7 +41,7 @@ if [ -n "${SOCKS5H_HOST:-}" ]; then
     echo "tcp_connect_time_out 8000"
     echo "[ProxyList]"
     echo "socks5 127.0.0.1 1080"
-    echo "socks5  ${SOCKS5H_HOST} ${SOCKS5H_PORT}
+    echo "socks5  ${SOCKS5H_HOST} ${SOCKS5H_PORT}"
   } >/etc/proxychains4.conf
 
   {
